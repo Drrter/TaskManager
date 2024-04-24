@@ -3,46 +3,102 @@ using TaskManager.DB;
 
 namespace TaskManager.Repository
 {
+    /// <summary>
+    /// интерфейс с методами управления событиями
+    /// </summary>
     public interface IEventRepository
     {
-        Task<List<Events>> GetAllEvents();
-        Task<Events> GetEventById(int id);
-        Task AddEvent(Events newEvent);
-        Task UpdateEvent(int id, Events updatedEvent);
-        Task DeleteEvent(int id);
+        /// <summary>
+        /// получает список всех событий
+        /// </summary>
+        /// <returns>список событий</returns>
+        Task<List<Events>> GetAllEventsAsync();
+        /// <summary>
+        /// получает событие по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <returns>
+        /// получает событие с указанным идентификатором</returns>
+        Task<Events> GetEventByIdAsync(int id);
+        /// <summary>
+        /// добавление события
+        /// </summary>
+        /// <param name="newEvent">новое событие</param>
+        /// <returns>выполнено</returns>
+        Task AddEventAsync(Events newEvent);
+        /// <summary>
+        /// обновление события
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <param name="updatedEvent">обновленное событие</param>
+        /// <returns></returns>
+        Task UpdateEventAsync(int id, Events updatedEvent);
+        /// <summary>
+        /// удаление события
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <returns>выполнено</returns>
+        Task DeleteEventAsync(int id);
     }
+    /// <summary>
+    /// реализация репозитория IEventRepository
+    /// </summary>
     public class EventRepository : IEventRepository
     {
+        /// <summary>
+        /// передает TaskContext в конструктор
+        /// </summary>
         private readonly TaskContext _context;
 
         public EventRepository(TaskContext context)
         {
             _context = context;
         }
-
-        public async Task<List<Events>> GetAllEvents()
+        /// <summary>
+        /// получает список всех событий
+        /// </summary>
+        /// <returns>список событий</returns>
+        public async Task<List<Events>> GetAllEventsAsync()
         {
             return await _context.Events.ToListAsync();
         }
-
-        public async Task<Events> GetEventById(int id)
+        /// <summary>
+        /// получает событие по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <returns>
+        /// получает событие с указанным идентификатором</returns>
+        public async Task<Events> GetEventByIdAsync(int id)
         {
             return await _context.Events.FindAsync(id);
         }
-
-        public async Task AddEvent(Events newEvent)
+        /// <summary>
+        /// добавление события
+        /// </summary>
+        /// <param name="newEvent">новое событие</param>
+        /// <returns>выполнено</returns>
+        public async Task AddEventAsync(Events newEvent)
         {
             _context.Events.Add(newEvent);
             await _context.SaveChangesAsync();
         }
-
-        public async Task UpdateEvent(int id,Events updatedEvent)
+        /// <summary>
+        /// обновление события
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <param name="updatedEvent">обновленное событие</param>
+        /// <returns></returns>
+        public async Task UpdateEventAsync(int id,Events updatedEvent)
         {
             _context.Entry(updatedEvent).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
-
-        public async Task DeleteEvent(int id)
+        /// <summary>
+        /// удаление события
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <returns>выполнено</returns>
+        public async Task DeleteEventAsync(int id)
         {
             var eventToDelete = await _context.Events.FindAsync(id);
             if (eventToDelete != null)
@@ -52,36 +108,65 @@ namespace TaskManager.Repository
             }
         }
     }
+    /// <summary>
+    /// сервис для управления событиями
+    /// </summary>
     public class EventService
     {
+        /// <summary>
+        /// зависимость типа IEventRepository
+        /// </summary>
         private readonly IEventRepository _eventRepository;
 
         public EventService(IEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
         }
-
-        public async Task<List<Events>> GetAllEvents()
+        /// <summary>
+        /// получает список всех событий
+        /// </summary>
+        /// <returns>список событий</returns>
+        public async Task<List<Events>> GetAllEventsAsync(CancellationToken cancellationToken)
         {
-            return await _eventRepository.GetAllEvents();
+            return await _eventRepository.GetAllEventsAsync();
         }
-
-        public async Task<Events> GetEventById(int id)
+        /// <summary>
+        /// получает событие по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <returns>
+        /// получает событие с указанным идентификатором</returns>
+        public async Task<Events> GetEventByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _eventRepository.GetEventById(id);
+            return await _eventRepository.GetEventByIdAsync(id);
         }
-        public async Task AddEvent(Events newEvent)
+        /// <summary>
+        /// добавление события
+        /// </summary>
+        /// <param name="newEvent">новое событие</param>
+        /// <returns>выполнено</returns>
+        public async Task AddEventAsync(Events newEvent, CancellationToken cancellationToken)
         {
-            await _eventRepository.AddEvent(newEvent);
+            await _eventRepository.AddEventAsync(newEvent);
         }
-
-        public async Task UpdateEvent(Events updatedEvent)
+        /// <summary>
+        /// обновление события
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <param name="updatedEvent">обновленное событие</param>
+        /// <returns></returns>
+        public async Task UpdateEventAsync(Events updatedEvent, CancellationToken cancellationToken)
         {
-             await _eventRepository.UpdateEvent(updatedEvent.IdEvent, updatedEvent);
+             await _eventRepository.UpdateEventAsync(updatedEvent.IdEvent, updatedEvent);
         }
-        public async Task DeleteEvent(int id)
+        /// <summary>
+        /// удаление события
+        /// </summary>
+        /// <param name="id">идентификатор события</param>
+        /// <returns>выполнено</returns>
+        public async Task DeleteEventAsync(int id, CancellationToken cancellationToken)
         {
-            await _eventRepository.DeleteEvent(id);
+            await _eventRepository.DeleteEventAsync(id);
         }
     }
 

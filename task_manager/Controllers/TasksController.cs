@@ -11,44 +11,73 @@ using TaskManager.Repository;
 
 namespace TaskManager.Controllers
 {
+    /// <summary>
+    /// контроллер для работы с задачами 
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class TasksController : ControllerBase
     {
         private readonly TasksService _tasksService;
         private readonly CompletedTasksService _compltasksService;
-
+        /// <summary>
+        /// конструктор контроллера TasksController
+        /// </summary>
+        /// <param name="tasksService">сервис задач</param>
+        /// <param name="completedTasksService">сервис выполненных задач</param>
         public TasksController(TasksService tasksService, CompletedTasksService completedTasksService)
         {
             _tasksService = tasksService;
             _compltasksService = completedTasksService;
         }
-
+        /// <summary>
+        /// получить список всех заадч
+        /// </summary>
+        /// <param name="cancellationToken">токен отмены операции</param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<List<Tasks>>> GetAllTasks()
+        public async Task<ActionResult<List<Tasks>>> GetAllTasksAsync(CancellationToken cancellationToken)
         {
-            var tasks = await _tasksService.GetAllTasks();
+            var tasks = await _tasksService.GetAllTasksAsync(cancellationToken);
             return Ok(tasks);
         }
-
+        /// <summary>
+        /// получить задачу по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор задачи</param>
+        /// <param name="cancellationToken">токен отмены операции</param>
+        /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<Tasks>> GetTasksById(int id)
+        public async Task<ActionResult<Tasks>> GetTasksByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var @task = await _tasksService.GetTasksById(id);
+            var @task = await _tasksService.GetTasksByIdAsync(id, cancellationToken);
             if (@task == null)
             {
                 return NotFound();
             }
             return @task;
         }
+        /// <summary>
+        /// добавить новую задачу
+        /// </summary>
+        /// <param name="newTask">новая задача</param>
+        /// <param name="cancellationToken">токен отмены операции</param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<Tasks>> AddTask(Tasks newTask)
+        public async Task<ActionResult<Tasks>> AddTaskAsync(Tasks newTask, CancellationToken cancellationToken)
         {
-            await _tasksService.AddTask(newTask);
-            return CreatedAtAction(nameof(GetTasksById), new { id = newTask.IdTask }, newTask);
+            await _tasksService.AddTaskAsync(newTask, cancellationToken);
+            return CreatedAtAction(nameof(GetTasksByIdAsync), new { id = newTask.IdTask }, newTask);
         }
+        /// <summary>
+        /// обновление существующей задачи
+        /// </summary>
+        /// <param name="id">идентификатор задачи</param>
+        /// <param name="updatedTask">обновленная задача</param>
+        /// <param name="cancellationToken">токен отмены операции</param>
+        /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTask(int id, Tasks updatedTask)
+        public async Task<IActionResult> UpdateTaskAsync(int id, Tasks updatedTask,CancellationToken cancellationToken)
         {
             if (id != updatedTask.IdTask)
             {
@@ -69,25 +98,31 @@ namespace TaskManager.Controllers
                     IdProject = updatedTask.IdProject
                 };
 
-                await _compltasksService.AddComplTask(newComplTask);
-                await _tasksService.DeleteTask(updatedTask.IdTask);
+                await _compltasksService.AddComplTaskAsync(newComplTask,cancellationToken);
+                await _tasksService.DeleteTaskAsync(updatedTask.IdTask,cancellationToken);
                 return NoContent();
             }
 
-            await _tasksService.UpdateTask(updatedTask);
+            await _tasksService.UpdateTaskAsync(updatedTask, cancellationToken);
 
             return NoContent();
         }
+        /// <summary>
+        /// удаление задачи
+        /// </summary>
+        /// <param name="id">идентификатор задачи</param>
+        /// <param name="cancellationToken">токен отмены операции</param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTask(int id)
+        public async Task<IActionResult> DeleteTaskAsync(int id, CancellationToken cancellationToken)
         {
-            var taskToDelete = await _tasksService.GetTasksById(id);
+            var taskToDelete = await _tasksService.GetTasksByIdAsync(id, cancellationToken);
             if (taskToDelete == null)
             {
                 return NotFound();
             }
 
-            await _tasksService.DeleteTask(id);
+            await _tasksService.DeleteTaskAsync(id,cancellationToken);
 
             return NoContent();
         }

@@ -3,46 +3,100 @@ using TaskManager.DB;
 
 namespace TaskManager.Repository
 {
+    /// <summary>
+    /// интерфейс с методами управления пользователями
+    /// </summary>
     public interface IUserRepository
     {
-        Task<List<Users>> GetAllUsers();
-        Task<Users> GetUserById(int id);
-        Task AddUser(Users newUser);
-        Task UpdateUser(int id, Users updatedUser);
-        Task DeleteUser(int id);
+        /// <summary>
+        /// получает список всех пользователей
+        /// </summary>
+        /// <returns>список пользователей</returns>
+        Task<List<Users>> GetAllUsersAsync();
+        /// <summary>
+        /// получает пользователя по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор пользователя</param>
+        /// <returns>пользователь с указанным идентификатором</returns>
+        Task<Users> GetUserByIdAsync(int id);
+        /// <summary>
+        /// добавляет пользователя
+        /// </summary>
+        /// <param name="newUser">новый пользователь(согласно классу users)</param>
+        /// <returns>выполнено</returns>
+        Task AddUserAsync(Users newUser);
+        /// <summary>
+        /// обновление существующего пользователя
+        /// </summary>
+        /// <param name="id">идентификатор пользователя</param>
+        /// <param name="updatedUser">обновленный пользователь</param>
+        /// <returns>выполнено</returns>
+        Task UpdateUserAsync(int id, Users updatedUser);
+        /// <summary>
+        /// удаление пользоватея
+        /// </summary>
+        /// <param name="id">идентификатор пользоватея</param>
+        /// <returns>выполнено</returns>
+        Task DeleteUserAsync(int id);
     }
+    /// <summary>
+    /// реализация репозитория IUserRepository
+    /// </summary>
     public class UserRepository:IUserRepository
     {
         private readonly TaskContext _context;
-
+        /// <summary>
+        /// передает taskcontext в конструктор
+        /// </summary>
+        /// <param name="context">контекст базы данных для взаимодействия с ней </param>
         public UserRepository(TaskContext context)
         {
             _context = context;
         }
-
-        public async Task<List<Users>> GetAllUsers()
+        /// <summary>
+        /// получает список всех пользователей
+        /// </summary>
+        /// <returns>список пользователей</returns>
+        public async Task<List<Users>> GetAllUsersAsync()
         {
             return await _context.Users.ToListAsync();
         }
-
-        public async Task<Users> GetUserById(int id)
+        /// <summary>
+        /// получает пользователя по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор пользователя</param>
+        /// <returns>пользователь с указанным идентификатором</returns>
+        public async Task<Users> GetUserByIdAsync(int id)
         {
             return await _context.Users.FindAsync(id);
         }
-
-        public async Task AddUser(Users newUser)
+        /// <summary>
+        /// добавляет пользователя
+        /// </summary>
+        /// <param name="newUser">новый пользователь(согласно классу users)</param>
+        /// <returns>выполнено</returns>
+        public async Task AddUserAsync(Users newUser)
         {
             _context.Users.Add(newUser);
             await _context.SaveChangesAsync();
         }
-
-        public async Task UpdateUser(int id, Users updatedUser)
+        /// <summary>
+        /// обновление существующего пользователя
+        /// </summary>
+        /// <param name="id">идентификатор пользователя</param>
+        /// <param name="updatedUser">обновленный пользователь</param>
+        /// <returns>выполнено</returns>
+        public async Task UpdateUserAsync(int id, Users updatedUser)
         {
             _context.Entry(updatedUser).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
-
-        public async Task DeleteUser(int id)
+        /// <summary>
+        /// удаление пользоватея
+        /// </summary>
+        /// <param name="id">идентификатор пользоватея</param>
+        /// <returns>выполнено</returns>
+        public async Task DeleteUserAsync(int id)
         {
             var userToDelete = await _context.Users.FindAsync(id);
             if (userToDelete != null)
@@ -52,35 +106,63 @@ namespace TaskManager.Repository
             }
         }
     }
+    /// <summary>
+    /// Сервис для управления пользователями
+    /// </summary>
     public class UsersService
     {
+        /// <summary>
+        /// зависимость типа IUserRepository
+        /// </summary>
         private readonly IUserRepository _userRepository;
         public UsersService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
-
-        public async Task<List<Users>> GetAllUsers()
+        /// <summary>
+        /// получает список всех пользователей
+        /// </summary>
+        /// <returns>список пользователей</returns>
+        public async Task<List<Users>> GetAllUsersAsync(CancellationToken cancellationToken)
         {
-            return await _userRepository.GetAllUsers();
+            return await _userRepository.GetAllUsersAsync();
         }
-
-        public async Task<Users> GetUserById(int id)
+        /// <summary>
+        /// получает пользователя по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор пользователя</param>
+        /// <returns>пользователь с указанным идентификатором</returns>
+        public async Task<Users> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _userRepository.GetUserById(id);
+            return await _userRepository.GetUserByIdAsync(id);
         }
-        public async Task AddUser(Users newUser)
+        /// <summary>
+        /// добавляет пользователя
+        /// </summary>
+        /// <param name="newUser">новый пользователь(согласно классу users)</param>
+        /// <returns>выполнено</returns>
+        public async Task AddUserAsync(Users newUser, CancellationToken cancellationToken)
         {
-            await _userRepository.AddUser(newUser);
+            await _userRepository.AddUserAsync(newUser);
         }
-
-        public async Task UpdateUser(Users updatedUser)
+        /// <summary>
+        /// обновление существующего пользователя
+        /// </summary>
+        /// <param name="id">идентификатор пользователя</param>
+        /// <param name="updatedUser">обновленный пользователь</param>
+        /// <returns>выполнено</returns>
+        public async Task UpdateUserAsync(Users updatedUser, CancellationToken cancellationToken)
         {
-            await _userRepository.UpdateUser(updatedUser.IdUser, updatedUser);
+            await _userRepository.UpdateUserAsync(updatedUser.IdUser, updatedUser);
         }
-        public async Task DeleteUser(int id)
+        /// <summary>
+        /// удаление пользоватея
+        /// </summary>
+        /// <param name="id">идентификатор пользоватея</param>
+        /// <returns>выполнено</returns>
+        public async Task DeleteUserAsync(int id, CancellationToken cancellationToken)
         {
-            await _userRepository.DeleteUser(id);
+            await _userRepository.DeleteUserAsync(id);
         }
     }
 }

@@ -3,47 +3,85 @@ using TaskManager.DB;
 
 namespace TaskManager.Repository
 {
+    /// <summary>
+    /// интерфейс с методами управления приоритетами
+    /// </summary>
     public interface IPrioritiesTaskRepository
     {
-        Task<List<PrioritiesTask>> GetAllPriority();
-        Task<PrioritiesTask> GetPriorityById(int id);
+        /// <summary>
+        /// получает список всех приоритетов
+        /// </summary>
+        /// <returns>список приоритетов</returns>
+        Task<List<PrioritiesTask>> GetAllPriorityAsync();
+        /// <summary>
+        /// получает приоритет по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор приоритета</param>
+        /// <returns>приоритет с указанным идентификатором</returns>
+        Task<PrioritiesTask> GetPriorityByIdAsync(int id);
     }
+    /// <summary>
+    /// реализаци репозитория IPrioritiesTaskRepository
+    /// </summary>
     public class PrioritiesTaskRepository : IPrioritiesTaskRepository
     {
+        /// <summary>
+        /// передает TaskContext в конструктор
+        /// </summary>
         private readonly TaskContext _context;
 
         public PrioritiesTaskRepository(TaskContext context)
         {
             _context = context;
         }
-
-        public async Task<List<PrioritiesTask>> GetAllPriority()
+        /// <summary>
+        /// получает список всех приоритетов
+        /// </summary>
+        /// <returns>список приоритетов</returns>
+        public async Task<List<PrioritiesTask>> GetAllPriorityAsync()
         {
             return await _context.PrioritiesTask.ToListAsync();
         }
-
-        public async Task<PrioritiesTask> GetPriorityById(int id)
+        /// <summary>
+        /// получает приоритет по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор приоритета</param>
+        /// <returns>приоритет с указанным идентификатором</returns>
+        public async Task<PrioritiesTask> GetPriorityByIdAsync(int id)
         {
             return await _context.PrioritiesTask.FindAsync(id);
         }
     }
+    /// <summary>
+    /// сервис для управления приоритетами
+    /// </summary>
     public class PrioritiesServices
     {
+        /// <summary>
+        /// зависимость типа IPrioritiesTaskRepository
+        /// </summary>
         private readonly IPrioritiesTaskRepository _prioritiesTaskRepository;
 
         public PrioritiesServices(IPrioritiesTaskRepository prioritiesTaskRepository)
         {
             _prioritiesTaskRepository = prioritiesTaskRepository;
         }
-
-        public async Task<List<PrioritiesTask>> GetAllPriority()
+        /// <summary>
+        /// получает список всех приоритетов
+        /// </summary>
+        /// <returns>список приоритетов</returns>
+        public async Task<List<PrioritiesTask>> GetAllPriorityAsync(CancellationToken cancellationToken)
         {
-            return await _prioritiesTaskRepository.GetAllPriority();
+            return await _prioritiesTaskRepository.GetAllPriorityAsync();
         }
-
-        public async Task<PrioritiesTask> GetPriorityById(int id)
+        /// <summary>
+        /// получает приоритет по идентификатору
+        /// </summary>
+        /// <param name="id">идентификатор приоритета</param>
+        /// <returns>приоритет с указанным идентификатором</returns>
+        public async Task<PrioritiesTask> GetPriorityByIdAsync(int id, CancellationToken cancellationToken)
         {
-            return await _prioritiesTaskRepository.GetPriorityById(id);
+            return await _prioritiesTaskRepository.GetPriorityByIdAsync(id);
         }
     }
 }
