@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер для работы с задачами 
+    /// Контроллер для работы с задачами 
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -21,20 +22,20 @@ namespace TaskManager.Controllers
         private readonly TasksService _tasksService;
         private readonly CompletedTasksService _compltasksService;
         /// <summary>
-        /// конструктор контроллера TasksController
+        /// Конструктор контроллера TasksController
         /// </summary>
-        /// <param name="tasksService">сервис задач</param>
-        /// <param name="completedTasksService">сервис выполненных задач</param>
+        /// <param name="tasksService">Сервис задач</param>
+        /// <param name="completedTasksService">Сервис выполненных задач</param>
         public TasksController(TasksService tasksService, CompletedTasksService completedTasksService)
         {
             _tasksService = tasksService;
             _compltasksService = completedTasksService;
         }
         /// <summary>
-        /// получить список всех заадч
+        /// Получить список всех заадч
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список задач</returns>
         [HttpGet]
         public async Task<ActionResult<List<Tasks>>> GetAllTasksAsync(CancellationToken cancellationToken)
         {
@@ -42,11 +43,11 @@ namespace TaskManager.Controllers
             return Ok(tasks);
         }
         /// <summary>
-        /// получить задачу по идентификатору
+        /// Получить задачу по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор задачи</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор задачи</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Задача по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Tasks>> GetTasksByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -58,28 +59,28 @@ namespace TaskManager.Controllers
             return @task;
         }
         /// <summary>
-        /// добавить новую задачу
+        /// Добавить новую задачу
         /// </summary>
-        /// <param name="newTask">новая задача</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="newTask">Новая задача</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPost]
         public async Task<ActionResult<Tasks>> AddTaskAsync(Tasks newTask, CancellationToken cancellationToken)
         {
             await _tasksService.AddTaskAsync(newTask, cancellationToken);
-            return CreatedAtAction(nameof(GetTasksByIdAsync), new { id = newTask.IdTask }, newTask);
+            return CreatedAtAction(nameof(GetTasksByIdAsync), new { id = newTask.Id }, newTask);
         }
         /// <summary>
-        /// обновление существующей задачи
+        /// Обновление существующей задачи
         /// </summary>
-        /// <param name="id">идентификатор задачи</param>
-        /// <param name="updatedTask">обновленная задача</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор задачи</param>
+        /// <param name="updatedTask">Обновленная задача</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTaskAsync(int id, Tasks updatedTask,CancellationToken cancellationToken)
         {
-            if (id != updatedTask.IdTask)
+            if (id != updatedTask.Id)
             {
                 return BadRequest();
             }
@@ -88,7 +89,7 @@ namespace TaskManager.Controllers
                 CompletedTasks newComplTask = new CompletedTasks
                 {
                     // копирование значений из updatedTask в completedTask
-                    IdCompltask = updatedTask.IdTask,
+                    Id = updatedTask.Id,
                     CompltaskName = updatedTask.TaskName,
                     DescriptionCompltask = updatedTask.DescriptionTask,
                     IdStatus = 4,
@@ -99,7 +100,7 @@ namespace TaskManager.Controllers
                 };
 
                 await _compltasksService.AddComplTaskAsync(newComplTask,cancellationToken);
-                await _tasksService.DeleteTaskAsync(updatedTask.IdTask,cancellationToken);
+                await _tasksService.DeleteTaskAsync(updatedTask.Id,cancellationToken);
                 return NoContent();
             }
 
@@ -108,11 +109,11 @@ namespace TaskManager.Controllers
             return NoContent();
         }
         /// <summary>
-        /// удаление задачи
+        /// Удаление задачи
         /// </summary>
-        /// <param name="id">идентификатор задачи</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор задачи</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTaskAsync(int id, CancellationToken cancellationToken)
         {

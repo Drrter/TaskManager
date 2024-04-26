@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер для работы с пользователями
+    /// Контроллер для работы с пользователями
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -20,30 +21,30 @@ namespace TaskManager.Controllers
     {
         private readonly UsersService _usersService;
         /// <summary>
-        /// конструктор контроллера UsersController
+        /// Конструктор контроллера UsersController
         /// </summary>
-        /// <param name="userService">сервис пользователей</param>
+        /// <param name="userService">Сервис пользователей</param>
         public UsersController(UsersService userService)
         {
             _usersService = userService;
         }
         /// <summary>
-        /// получить всех пользователей
+        /// Получить список всех пользователей
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список пользователей</returns>
         [HttpGet]
-        public async Task<ActionResult<List<Users>>> GetAllUsersAsync(CancellationToken cancellationToken = default)
+        public async Task<ActionResult<List<Users>>> GetAllUsersAsync(CancellationToken cancellationToken)
         {
             var users = await _usersService.GetAllUsersAsync(cancellationToken);
             return Ok(users);
         }
         /// <summary>
-        /// получить пользователей по идентификатору
+        /// Получить пользователей по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор пользователя</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор пользователя</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Пользователь по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Users>> GetUserByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -55,28 +56,28 @@ namespace TaskManager.Controllers
             return @user;
         }
         /// <summary>
-        /// добавить нового пользователя
+        /// Добавить нового пользователя
         /// </summary>
-        /// <param name="newUser">новый пользователь</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="newUser">Новый пользователь</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPost]
         public async Task<ActionResult<Users>> AddUserAsync(Users newUser, CancellationToken cancellationToken )
         {
             await _usersService.AddUserAsync(newUser,cancellationToken);
-            return CreatedAtAction(nameof(GetUserByIdAsync), new { id = newUser.IdUser }, newUser);
+            return CreatedAtAction(nameof(GetUserByIdAsync), new { id = newUser.Id }, newUser);
         }
         /// <summary>
-        /// обновить данные пользователя
+        /// Обновить данные пользователя
         /// </summary>
-        /// <param name="id">идентификатор пользователя</param>
-        /// <param name="updatedUser">обновленный пользователь</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор пользователя</param>
+        /// <param name="updatedUser">Обновленный пользователь</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserAsync(int id, Users updatedUser, CancellationToken cancellationToken)
         {
-            if (id != updatedUser.IdUser)
+            if (id != updatedUser.Id)
             {
                 return BadRequest();
             }
@@ -86,11 +87,11 @@ namespace TaskManager.Controllers
             return NoContent();
         }
         /// <summary>
-        /// удалить пользователя
+        /// Удалить пользователя
         /// </summary>
-        /// <param name="id">идентификатор пользователя</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор пользователя</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserAsync(int id, CancellationToken cancellationToken)
         {

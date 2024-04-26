@@ -3,28 +3,28 @@
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность проектов
+    /// Сущность проектов
     /// </summary>
     public class Projects
     {
         /// <summary>
-        /// идентификатор проекта
+        /// Идентификатор проекта
         /// </summary>
-        [Key] public int IdProject { get; set; }
+        public int Id { get; set; }
         /// <summary>
-        /// название проекта
+        /// Название проекта
         /// </summary>
         public required string ProjectName { get; set; }
         /// <summary>
-        /// описание проекта
+        /// Описание проекта
         /// </summary>
         public required string Description { get; set; }
         /// <summary>
-        /// дата начала работы над проектом
+        /// Дата начала работы над проектом
         /// </summary>
         public DateOnly StartDate { get; set; }
         /// <summary>
-        /// дата окончания работы над проектом
+        /// Дата окончания работы над проектом
         /// </summary>
         public DateOnly EndDate { get; set;}
     }

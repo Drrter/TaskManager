@@ -24,11 +24,11 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.DB.Comments", b =>
                 {
-                    b.Property<int>("IdComment")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdComment"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("Datetime")
                         .HasColumnType("datetime(6)");
@@ -43,7 +43,7 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdComment");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdTask");
 
@@ -54,11 +54,11 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.DB.CompletedTasks", b =>
                 {
-                    b.Property<int>("IdCompltask")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdCompltask"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateOnly>("CompltaskEnddate")
                         .HasColumnType("date");
@@ -83,7 +83,7 @@ namespace TaskManager.Migrations
                     b.Property<int>("IdUsercreator")
                         .HasColumnType("int");
 
-                    b.HasKey("IdCompltask");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdProject");
 
@@ -98,11 +98,11 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.DB.Events", b =>
                 {
-                    b.Property<int>("IdEvent")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdEvent"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("EventDatetime")
                         .HasColumnType("datetime(6)");
@@ -115,35 +115,35 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdEvent");
+                    b.HasKey("Id");
 
                     b.ToTable("Events");
                 });
 
             modelBuilder.Entity("TaskManager.DB.PrioritiesTask", b =>
                 {
-                    b.Property<int>("IdPriority")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdPriority"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("PriorityName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdPriority");
+                    b.HasKey("Id");
 
                     b.ToTable("PrioritiesTask");
                 });
 
             modelBuilder.Entity("TaskManager.DB.Projects", b =>
                 {
-                    b.Property<int>("IdProject")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdProject"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -159,18 +159,18 @@ namespace TaskManager.Migrations
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-                    b.HasKey("IdProject");
+                    b.HasKey("Id");
 
                     b.ToTable("Projects");
                 });
 
             modelBuilder.Entity("TaskManager.DB.StatusTask", b =>
                 {
-                    b.Property<int>("IdStatus")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdStatus"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DescriptionStat")
                         .IsRequired()
@@ -180,18 +180,18 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdStatus");
+                    b.HasKey("Id");
 
                     b.ToTable("StatusTasks");
                 });
 
             modelBuilder.Entity("TaskManager.DB.Tasks", b =>
                 {
-                    b.Property<int>("IdTask")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdTask"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateOnly>("Deadline")
                         .HasColumnType("date");
@@ -219,7 +219,7 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdTask");
+                    b.HasKey("Id");
 
                     b.HasIndex("IdPriority");
 
@@ -237,12 +237,10 @@ namespace TaskManager.Migrations
             modelBuilder.Entity("TaskManager.DB.TeamMembers", b =>
                 {
                     b.Property<int>("IdTeam")
-                        .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnType("int");
 
                     b.Property<int>("IdUser")
-                        .HasColumnType("int")
-                        .HasColumnOrder(1);
+                        .HasColumnType("int");
 
                     b.Property<string>("Role")
                         .IsRequired()
@@ -257,28 +255,28 @@ namespace TaskManager.Migrations
 
             modelBuilder.Entity("TaskManager.DB.Teams", b =>
                 {
-                    b.Property<int>("IdTeam")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdTeam"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("TeamName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdTeam");
+                    b.HasKey("Id");
 
                     b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("TaskManager.DB.Users", b =>
                 {
-                    b.Property<int>("IdUser")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdUser"));
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -296,7 +294,7 @@ namespace TaskManager.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("IdUser");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });

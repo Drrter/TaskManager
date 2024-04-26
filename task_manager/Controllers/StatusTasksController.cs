@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер работы со статусами задач
+    /// Контроллер работы со статусами задач
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -20,18 +21,18 @@ namespace TaskManager.Controllers
     {
         private readonly StatusService _statusService;
         /// <summary>
-        /// конструктор контроллера StatusTasksController
+        /// Конструктор контроллера StatusTasksController
         /// </summary>
-        /// <param name="statusService">сервис статусов</param>
+        /// <param name="statusService">Сервис статусов</param>
         public StatusTasksController(StatusService statusService)
         {
             _statusService = statusService;
         }
         /// <summary>
-        /// получить список всех статусов
+        /// Получить список всех статусов
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список статусов</returns>
         [HttpGet]
         public async Task<ActionResult<List<StatusTask>>> GetAllStatusAsync(CancellationToken cancellationToken)
         {
@@ -39,11 +40,11 @@ namespace TaskManager.Controllers
             return Ok(status);
         }
         /// <summary>
-        /// получить статус по идентификатору
+        /// Получить статус по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор статуса</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор статуса</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Статус по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<StatusTask>> GetStatusByIdAsync(int id, CancellationToken cancellationToken)
         {

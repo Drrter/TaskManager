@@ -4,165 +4,40 @@ using TaskManager.DB;
 namespace TaskManager.Repository
 {
     /// <summary>
-    /// интерфейс с методами управления комментариями
+    /// Интерфейс с методами управления комментариями
     /// </summary>
     public interface ICommentsRepository
     {
         /// <summary>
-        /// получает список всех комментариев
+        /// Получает список всех комментариев
         /// </summary>
-        /// <returns>список комментариев</returns>
-        Task<List<Comments>> GetAllCommentsAsync();
+        /// <returns>Список комментариев</returns>
+        Task<List<Comments>> GetAllCommentsAsync(CancellationToken cancellationToken);
         /// <summary>
-        /// получает комментарий по идентификатору
+        /// Получает комментарий по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <returns>комментарий по указанному идентификатору</returns>
-        Task<Comments> GetCommentsByIdAsync(int id);
+        /// <param name="id">Идентификатор комментария</param>
+        /// <returns>Комментарий по указанному идентификатору</returns>
+        Task<Comments> GetCommentsByIdAsync(int id, CancellationToken cancellationToken);
         /// <summary>
-        /// добавление комментария
+        /// Добавление комментария
         /// </summary>
-        /// <param name="newComment">новый комментарий </param>
-        /// <returns>выполнено</returns>
-        Task AddCommentAsync(Comments newComment);
+        /// <param name="newComment">Новый комментарий </param>
+        /// <returns>Выполнено</returns>
+        Task AddCommentAsync(Comments newComment, CancellationToken cancellationToken);
         /// <summary>
-        /// изменение комментария
+        /// Изменение комментария
         /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <param name="updatedComment">обновленный комментарий</param>
-        /// <returns>выполнено</returns>
-        Task UpdateCommentAsync(int id, Comments updatedComment);
+        /// <param name="id">Идентификатор комментария</param>
+        /// <param name="updatedComment">Обновленный комментарий</param>
+        /// <returns>Выполнено</returns>
+        Task UpdateCommentAsync(int id, Comments updatedComment, CancellationToken cancellationToken);
         /// <summary>
-        /// удаление комментария
+        /// Удаление комментария
         /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <returns>выполнено</returns>
-        Task DeleteCommentAsync(int id);
+        /// <param name="id">Идентификатор комментария</param>
+        /// <returns>Выполнено</returns>
+        Task DeleteCommentAsync(int id, CancellationToken cancellationToken);
     }
-    /// <summary>
-    /// реализация репозитория ICommentsRepository
-    /// </summary>
-    public class CommentsRepository:ICommentsRepository
-    {
-        /// <summary>
-        /// передает TaskContext в конструктор
-        /// </summary>
-        private readonly TaskContext _context;
-
-        public CommentsRepository(TaskContext context)
-        {
-            _context = context;
-        }
-        /// <summary>
-        /// получает список всех комментариев
-        /// </summary>
-        /// <returns>список комментариев</returns>
-        public async Task<List<Comments>> GetAllCommentsAsync()
-        {
-            return await _context.Comments.ToListAsync();
-        }
-        /// <summary>
-        /// получает комментарий по идентификатору
-        /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <returns>комментарий по указанному идентификатору</returns>
-        public async Task<Comments> GetCommentsByIdAsync(int id)
-        {
-            return await _context.Comments.FindAsync(id);
-        }
-        /// <summary>
-        /// добавление комментария
-        /// </summary>
-        /// <param name="newComment">новый комментарий </param>
-        /// <returns>выполнено</returns>
-        public async Task AddCommentAsync(Comments newComment)
-        {
-            _context.Comments.Add(newComment);
-            await _context.SaveChangesAsync();
-        }
-        /// <summary>
-        /// изменение комментария
-        /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <param name="updatedComment">обновленный комментарий</param>
-        /// <returns>выполнено</returns>
-        public async Task UpdateCommentAsync(int id, Comments updatedComment)
-        {
-            _context.Entry(updatedComment).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-        /// <summary>
-        /// удаление комментария
-        /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <returns>выполнено</returns>
-        public async Task DeleteCommentAsync(int id)
-        {
-            var commentToDelete = await _context.Comments.FindAsync(id);
-            if (commentToDelete != null)
-            {
-                _context.Comments.Remove(commentToDelete);
-                await _context.SaveChangesAsync();
-            }
-        }
-    }
-    /// <summary>
-    /// сервис управления комментариями
-    /// </summary>
-    public class CommentsService
-    {
-        /// <summary>
-        /// зависимость типа ICommentsRepository
-        /// </summary>
-        private readonly ICommentsRepository _commentsRepository;
-        public CommentsService(ICommentsRepository commentsRepository)
-        {
-            _commentsRepository = commentsRepository;
-        }
-        /// <summary>
-        /// получает список всех комментариев
-        /// </summary>
-        /// <returns>список комментариев</returns>
-        public async Task<List<Comments>> GetAllCommentsAsync(CancellationToken cancellationToken)
-        {
-            return await _commentsRepository.GetAllCommentsAsync();
-        }
-        /// <summary>
-        /// получает комментарий по идентификатору
-        /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <returns>комментарий по указанному идентификатору</returns>
-        public async Task<Comments> GetCommentsByIdAsync(int id, CancellationToken cancellationToken)
-        {
-            return await _commentsRepository.GetCommentsByIdAsync(id);
-        }
-        /// <summary>
-        /// добавление комментария
-        /// </summary>
-        /// <param name="newComment">новый комментарий </param>
-        /// <returns>выполнено</returns>
-        public async Task AddCommentAsync(Comments newComment, CancellationToken cancellationToken)
-        {
-            await _commentsRepository.AddCommentAsync(newComment);
-        }
-        /// <summary>
-        /// изменение комментария
-        /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <param name="updatedComment">обновленный комментарий</param>
-        /// <returns>выполнено</returns>
-        public async Task UpdateCommentAsync(Comments updatedComment, CancellationToken cancellationToken)
-        {
-            await _commentsRepository.UpdateCommentAsync(updatedComment.IdComment, updatedComment);
-        }
-        /// <summary>
-        /// удаление комментария
-        /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <returns>выполнено</returns>
-        public async Task DeleteCommentAsync(int id, CancellationToken cancellationToken)
-        {
-            await _commentsRepository.DeleteCommentAsync(id);
-        }
-    }
+    
 }

@@ -8,6 +8,7 @@ using NuGet.Protocol.Core.Types;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
+using TaskManager.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,26 +26,32 @@ builder.Services.AddDbContext<TaskContext>(op =>
 });
 
 builder.Services.AddScoped<TaskContext>();
-builder.Services.AddScoped<IEventRepository, EventRepository>();
-builder.Services.AddScoped<EventService, EventService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<UsersService, UsersService>();
-builder.Services.AddScoped<IStatusTasksRepository, StatusTasksRerository>();
-builder.Services.AddScoped<StatusService, StatusService>();
-builder.Services.AddScoped<ITeamsRepository, TeamsRepository>();
-builder.Services.AddScoped<TeamsService, TeamsService>();
-builder.Services.AddScoped<IPrioritiesTaskRepository, PrioritiesTaskRepository>();
-builder.Services.AddScoped<PrioritiesServices, PrioritiesServices>();
-builder.Services.AddScoped<ITeamMembersRepository, TeamMembersRepository>();
-builder.Services.AddScoped<TeamMembersService, TeamMembersService>();
-builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
-builder.Services.AddScoped<ProjectsService, ProjectsService>();
-builder.Services.AddScoped<ITasksRepository, TasksRepository>();
-builder.Services.AddScoped<TasksService, TasksService>();
-builder.Services.AddScoped<ICompletedTasksRepository, CompletedTasksRepository>();
-builder.Services.AddScoped<CompletedTasksService, CompletedTasksService>();
-builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
-builder.Services.AddScoped<CommentsService, CommentsService>();
+//builder.Services.AddRepositoriesAndServices();
+builder.Services.AddServices();
+builder.Services.AddRepositories();
+
+
+
+//builder.Services.AddScoped<IEventRepository, EventRepository>();
+//builder.Services.AddScoped<EventService, EventService>();
+//builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+//builder.Services.AddScoped<UsersService, UsersService>();
+//builder.Services.AddScoped<IStatusTasksRepository, StatusTasksRerository>();
+//builder.Services.AddScoped<StatusService, StatusService>();
+//builder.Services.AddScoped<ITeamsRepository, TeamsRepository>();
+//builder.Services.AddScoped<TeamsService, TeamsService>();
+//builder.Services.AddScoped<IPrioritiesTaskRepository, PrioritiesTaskRepository>();
+//builder.Services.AddScoped<PrioritiesService, PrioritiesService>();
+//builder.Services.AddScoped<ITeamMembersRepository, TeamMembersRepository>();
+//builder.Services.AddScoped<TeamMembersService, TeamMembersService>();
+//builder.Services.AddScoped<IProjectsRepository, ProjectsRepository>();
+//builder.Services.AddScoped<ProjectsService, ProjectsService>();
+//builder.Services.AddScoped<ITasksRepository, TasksRepository>();
+//builder.Services.AddScoped<TasksService, TasksService>();
+//builder.Services.AddScoped<ICompletedTasksRepository, CompletedTasksRepository>();
+//builder.Services.AddScoped<CompletedTasksService, CompletedTasksService>();
+//builder.Services.AddScoped<ICommentsRepository, CommentsRepository>();
+//builder.Services.AddScoped<CommentsService, CommentsService>();
 
 
 

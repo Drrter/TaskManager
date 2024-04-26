@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер работы с проектами
+    /// Контроллер работы с проектами
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -20,30 +21,30 @@ namespace TaskManager.Controllers
     {
         private readonly ProjectsService _projectsService;
         /// <summary>
-        /// конструктор контроллера ProjectsController
+        /// Конструктор контроллера ProjectsController
         /// </summary>
-        /// <param name="projectsService">сервис проектов</param>
+        /// <param name="projectsService">Сервис проектов</param>
         public ProjectsController(ProjectsService projectsService)
         {
             _projectsService = projectsService;
         }
         /// <summary>
-        /// получить список всех проектов
+        /// Получить список всех проектов
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список проектов</returns>
         [HttpGet]
         public async Task<ActionResult<List<Projects>>> GetAllProjectsAsync(CancellationToken cancellationToken)
         {
-            var projects = await _projectsService.GetAllProjectsAsync();
+            var projects = await _projectsService.GetAllProjectsAsync(cancellationToken);
             return Ok(projects);
         }
         /// <summary>
-        /// получить проект по идентификатору
+        /// Получить проект по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор проекта</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор проекта</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Проект по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Projects>> GetProjectByIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -55,28 +56,28 @@ namespace TaskManager.Controllers
             return @project;
         }
         /// <summary>
-        /// добавить новый проект
+        /// Добавить новый проект
         /// </summary>
-        /// <param name="newProject">новый проект</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="newProject">Новый проект</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPost]
         public async Task<ActionResult<Projects>> AddProjectAsync(Projects newProject, CancellationToken cancellationToken)
         {
             await _projectsService.AddProjectAsync(newProject,cancellationToken);
-            return CreatedAtAction(nameof(GetProjectByIdAsync), new { id = newProject.IdProject }, newProject);
+            return CreatedAtAction(nameof(GetProjectByIdAsync), new { id = newProject.Id }, newProject);
         }
         /// <summary>
-        /// обновление данных проекта
+        /// Обновление данных проекта
         /// </summary>
-        /// <param name="id">идентификатор проекта</param>
-        /// <param name="updatedProject">обновленный проект</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор проекта</param>
+        /// <param name="updatedProject">Обновленный проект</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProjectAsync(int id, Projects updatedProject,CancellationToken cancellationToken)
         {
-            if (id != updatedProject.IdProject)
+            if (id != updatedProject.Id)
             {
                 return BadRequest();
             }
@@ -86,11 +87,11 @@ namespace TaskManager.Controllers
             return NoContent();
         }
         /// <summary>
-        /// удаление проекта
+        /// Удаление проекта
         /// </summary>
-        /// <param name="id">идентификатор проекта</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор проекта</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProjectAsync(int id,CancellationToken cancellationToken)
         {
@@ -100,7 +101,7 @@ namespace TaskManager.Controllers
                 return NotFound();
             }
 
-            await _projectsService.DeleteProjectAsync(id);
+            await _projectsService.DeleteProjectAsync(id, cancellationToken);
 
             return NoContent();
         }

@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер для работы с комментариями
+    /// Контроллер для работы с комментариями
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -20,18 +21,18 @@ namespace TaskManager.Controllers
     {
         private readonly CommentsService _commentsService;
         /// <summary>
-        /// конструктор контроллера CommentsController
+        /// Конструктор контроллера CommentsController
         /// </summary>
-        /// <param name="commentsService">сервис комментариев</param>
+        /// <param name="commentsService">Сервис комментариев</param>
         public CommentsController(CommentsService commentsService)
         {
             _commentsService = commentsService;
         }
         /// <summary>
-        /// получить список всех комментариев
+        /// Получить список всех комментариев
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список комментариев</returns>
         [HttpGet]
         public async Task<ActionResult<List<Comments>>> GetAllCommentsAsync(CancellationToken cancellationToken)
         {
@@ -39,14 +40,15 @@ namespace TaskManager.Controllers
             return Ok(comments);
         }
         /// <summary>
-        /// получить комментарий по идентификатору
+        /// Получить комментарий по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор комментария</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Комментарий по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Comments>> GetCommentsByIdAsync(int id,CancellationToken cancellationToken)
         {
+
             var @comments = await _commentsService.GetCommentsByIdAsync(id,cancellationToken);
             if (@comments == null)
             {
@@ -55,28 +57,28 @@ namespace TaskManager.Controllers
             return @comments;
         }
         /// <summary>
-        /// добавить новый комментарий
+        /// Добавить новый комментарий
         /// </summary>
-        /// <param name="newComment">новый комментарий</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="newComment">Новый комментарий</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPost]
         public async Task<ActionResult<Comments>> AddCommentAsync(Comments newComment,CancellationToken cancellationToken)
         {
             await _commentsService.AddCommentAsync(newComment,cancellationToken);
-            return CreatedAtAction(nameof(GetCommentsByIdAsync), new { id = newComment.IdComment }, newComment);
+            return CreatedAtAction(nameof(GetCommentsByIdAsync), new { id = newComment.Id }, newComment);
         }
         /// <summary>
-        /// обновить существующий комментарий
+        /// Обновить существующий комментарий
         /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <param name="updatedComment">обновленный комментарий</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор комментария</param>
+        /// <param name="updatedComment">Обновленный комментарий</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateCommentAsync(int id, Comments updatedComment,CancellationToken cancellationToken)
         {
-            if (id != updatedComment.IdComment)
+            if (id != updatedComment.Id)
             {
                 return BadRequest();
             }
@@ -86,11 +88,11 @@ namespace TaskManager.Controllers
             return NoContent();
         }
         /// <summary>
-        /// удалить комментарий 
+        /// Удалить комментарий 
         /// </summary>
-        /// <param name="id">идентификатор комментария</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор комментария</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCommentAsync(int id,CancellationToken cancellationToken)
         {

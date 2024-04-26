@@ -9,11 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер для работы с участниками команд
+    /// Контроллер для работы с участниками команд
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -21,18 +22,18 @@ namespace TaskManager.Controllers
     {
         private readonly TeamMembersService _teamMembersService;
         /// <summary>
-        /// конструктор контроллера TeamMembersController
+        /// Конструктор контроллера TeamMembersController
         /// </summary>
-        /// <param name="teamMembersService">сервис участников</param>
+        /// <param name="teamMembersService">Сервис участников</param>
         public TeamMembersController(TeamMembersService teamMembersService)
         {
             _teamMembersService = teamMembersService;
         }
         /// <summary>
-        /// получить список всех участников команд
+        /// Получить список всех участников команд
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список участников команд</returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TeamMembers>>> GetAllTeamMembersAsync(CancellationToken cancellationToken)
         {
@@ -40,11 +41,11 @@ namespace TaskManager.Controllers
             return Ok(teamMembers);
         }
         /// <summary>
-        /// получить участников по идентификатору команды
+        /// Получить участников по идентификатору команды
         /// </summary>
-        /// <param name="idTeam">идентификатор команды</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="idTeam">Идентификатор команды</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Участник команды по указанному идентификатору</returns>
         [HttpGet("GetByIdTeam/{idTeam}")]
         public async Task<ActionResult<TeamMembers>> GetByTeamIdAsync(int idTeam, CancellationToken cancellationToken)
         {
@@ -56,11 +57,11 @@ namespace TaskManager.Controllers
             return Ok(teamMember);
         }
         /// <summary>
-        /// получить участников по идентификатору пользователя
+        /// Получить участников по идентификатору пользователя
         /// </summary>
-        /// <param name="id">идентификатор пользователя</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор пользователя</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Участник команды по указанному идентификатору</returns>
         [HttpGet("GetByIdUser/{id}")]
         public async Task<ActionResult<TeamMembers>> GetByUserIdAsync(int id, CancellationToken cancellationToken)
         {
@@ -72,12 +73,12 @@ namespace TaskManager.Controllers
             return Ok(teamMember);
         }
         /// <summary>
-        /// удалить участников команды
+        /// Удалить участников команды
         /// </summary>
-        /// <param name="idTeam">идентификатор команды</param>
-        /// <param name="idUser">идентификатор пользователя</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="idTeam">Идентификатор команды</param>
+        /// <param name="idUser">Идентификатор пользователя</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpDelete("{idTeam}/{idUser}")]
         public async Task<ActionResult> DeleteMemberAsync(int idTeam, int idUser,CancellationToken cancellationToken)
         {
@@ -92,11 +93,11 @@ namespace TaskManager.Controllers
             }
         }
         /// <summary>
-        /// добавление участников в команды
+        /// Добавление участников в команды
         /// </summary>
-        /// <param name="newMember">новый участник команды</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="newMember">Новый участник команды</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPost]
         public async Task<ActionResult<TeamMembers>> AddMemberAsync(TeamMembers newMember,CancellationToken cancellationToken)
         {

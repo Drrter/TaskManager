@@ -8,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// конструктор для работы с событиями
+    /// Конструктор для работы с событиями
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -21,18 +22,18 @@ namespace TaskManager.Controllers
     {
         private readonly EventService _eventService;
         /// <summary>
-        /// конструктор контроллера EventsController
+        /// Конструктор контроллера EventsController
         /// </summary>
-        /// <param name="eventService">сервис событий</param>
+        /// <param name="eventService">Сервис событий</param>
         public EventsController(EventService eventService)
         {
             _eventService = eventService;
         }
         /// <summary>
-        /// получить список всех событий
+        /// Получить список всех событий
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список событий</returns>
         [HttpGet]
         public async Task<ActionResult<List<Events>>> GetAllEventsAsync(CancellationToken cancellationToken)
         {
@@ -40,11 +41,11 @@ namespace TaskManager.Controllers
             return Ok(events);
         }
         /// <summary>
-        /// получить событие по идентификатору
+        /// Получить событие по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор события</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор события</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Событий по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<Events>> GetEventByIdAsync(int id,CancellationToken cancellationToken)
         {
@@ -56,28 +57,28 @@ namespace TaskManager.Controllers
             return @event;
         }
         /// <summary>
-        /// добавить новое событие
+        /// Добавить новое событие
         /// </summary>
-        /// <param name="newEvent">новое событие</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="newEvent">Новое событие</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPost]
         public async Task<ActionResult<Events>> AddEventAsync(Events newEvent,CancellationToken cancellationToken)
         {
             await _eventService.AddEventAsync(newEvent,cancellationToken);
-            return CreatedAtAction(nameof(GetEventByIdAsync), new { id = newEvent.IdEvent }, newEvent);
+            return CreatedAtAction(nameof(GetEventByIdAsync), new { id = newEvent.Id }, newEvent);
         }
         /// <summary>
-        /// обновление существующего события
+        /// Обновление существующего события
         /// </summary>
-        /// <param name="id">идентификатор события</param>
-        /// <param name="updatedEvent">обновленное событие</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор события</param>
+        /// <param name="updatedEvent">Обновленное событие</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateEventAsync(int id, Events updatedEvent,CancellationToken cancellationToken)
         {
-            if (id != updatedEvent.IdEvent)
+            if (id != updatedEvent.Id)
             {
                 return BadRequest();
             }
@@ -87,11 +88,11 @@ namespace TaskManager.Controllers
             return NoContent();
         }
         /// <summary>
-        /// удаление события
+        /// Удаление события
         /// </summary>
-        /// <param name="id">идентификатор события</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор события</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Выполнено</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEventAsync(int id,CancellationToken cancellationToken)
         {

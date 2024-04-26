@@ -3,16 +3,16 @@
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность команд
+    /// Сущность команд
     /// </summary>
     public class Teams
     {
         /// <summary>
-        /// идентификатор команды
+        /// Идентификатор команды
         /// </summary>
-        [Key]public int IdTeam { get; set; }
+        public int Id { get; set; }
         /// <summary>
-        /// название команды
+        /// Название команды
         /// </summary>
         public required string TeamName { get; set; }
     }

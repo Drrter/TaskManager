@@ -8,30 +8,31 @@ using Microsoft.EntityFrameworkCore;
 using TaskManager;
 using TaskManager.DB;
 using TaskManager.Repository;
+using TaskManager.Services;
 
 namespace TaskManager.Controllers
 {
     /// <summary>
-    /// контроллер работы с приоритетами задач
+    /// Контроллер работы с приоритетами задач
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class PrioritiesTaskController : ControllerBase
     {
-        private readonly PrioritiesServices _prioritiesServices;
+        private readonly PrioritiesService _prioritiesServices;
         /// <summary>
-        /// конструктор контроллера PrioritiesTaskController
+        /// Конструктор контроллера PrioritiesTaskController
         /// </summary>
-        /// <param name="prioritiesServices"></param>
-        public PrioritiesTaskController(PrioritiesServices prioritiesServices)
+        /// <param name="prioritiesServices">Сервис приоритетов</param>
+        public PrioritiesTaskController(PrioritiesService prioritiesServices)
         {
             _prioritiesServices = prioritiesServices;
         }
         /// <summary>
-        /// получить список всех приоритетов
+        /// Получить список всех приоритетов
         /// </summary>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Список приоритетов</returns>
         [HttpGet]
         public async Task<ActionResult<List<PrioritiesTask>>> GetAllPriorityAsync(CancellationToken cancellationToken)
         {
@@ -39,11 +40,11 @@ namespace TaskManager.Controllers
             return Ok(priority);
         }
         /// <summary>
-        /// получить приоритет по идентификатору
+        /// Получить приоритет по идентификатору
         /// </summary>
-        /// <param name="id">идентификатор приоритета</param>
-        /// <param name="cancellationToken">токен отмены операции</param>
-        /// <returns></returns>
+        /// <param name="id">Идентификатор приоритета</param>
+        /// <param name="cancellationToken">Токен отмены операции</param>
+        /// <returns>Приоритет по указанному идентификатору</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<PrioritiesTask>> GetPriorityByIdAsync(int id,CancellationToken cancellationToken)
         {

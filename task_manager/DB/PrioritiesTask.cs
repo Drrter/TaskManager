@@ -3,16 +3,16 @@
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность приоритетов (от низкого к высокому)
+    /// Сущность приоритетов (от низкого к высокому)
     /// </summary>
     public class PrioritiesTask
     {
         /// <summary>
-        /// идентификатор приоритета
+        /// Идентификатор приоритета
         /// </summary>
-        [Key] public int IdPriority {  get; set; }
+        public int Id {  get; set; }
         /// <summary>
-        /// имя приоритета
+        /// Имя приоритета
         /// </summary>
         public required string PriorityName { get; set; }
     }

@@ -5,42 +5,42 @@ using System.Text.Json.Serialization;
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность выполненных (архивных) задач
+    /// Сущность выполненных (архивных) задач
     /// </summary>
     public class CompletedTasks
     {
         /// <summary>
-        /// идентификатор архивной задачи
+        /// Идентификатор архивной задачи
         /// </summary>
-        [Key] public int IdCompltask {  get; set; }
+        public int Id {  get; set; }
         /// <summary>
-        /// название архивной задачи
+        /// Название архивной задачи
         /// </summary>
         public required string CompltaskName { get; set; }
         /// <summary>
-        /// описание архивной задачи
+        /// Описание архивной задачи
         /// </summary>
         public required string DescriptionCompltask { get; set; }
         /// <summary>
-        /// статус задачи(всегда - 4(в архиве))
+        /// Статус задачи(всегда - 4(в архиве))
         /// </summary>
-        [ForeignKey("IdStatus")] public int IdStatus { get; set; }
+        public int IdStatus { get; set; }
         /// <summary>
-        /// дата выполнения задачи
+        /// Дата выполнения задачи
         /// </summary>
         public DateOnly CompltaskEnddate { get; set; }
         /// <summary>
-        /// идентификатор пользователя, выполнявшего задачу
+        /// Идентификатор пользователя, выполнявшего задачу
         /// </summary>
-        [ForeignKey("IdUser")] public int IdUser {  get; set; }
+        public int IdUser {  get; set; }
         /// <summary>
-        /// идентификатор создателя задачи
+        /// Идентификатор создателя задачи
         /// </summary>
-        [ForeignKey("IdUsercreator")] public int IdUsercreator { get; set; }
+        public int IdUsercreator { get; set; }
         /// <summary>
-        /// идентификатор проекта, к которому отнросилась задача
+        /// Идентификатор проекта, к которому отнросилась задача
         /// </summary>
-        [ForeignKey("IdProject")] public int IdProject { get; set; }
+        public int IdProject { get; set; }
 
     }
 }

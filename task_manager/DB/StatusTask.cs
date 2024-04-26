@@ -4,20 +4,20 @@
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность статусов задач(Создана, выполняется, выполнена, в архиве)
+    /// Сущность статусов задач(Создана, выполняется, выполнена, в архиве)
     /// </summary>
     public class StatusTask
     {
         /// <summary>
-        /// идентификатор статуса
+        /// Идентификатор статуса
         /// </summary>
-        [Key] public int IdStatus { get; set; }
+        public int Id { get; set; }
         /// <summary>
-        /// имя статуса
+        /// Имя статуса
         /// </summary>
         public required string Status { get; set; }
         /// <summary>
-        /// описание статуса
+        /// Описание статуса
         /// </summary>
         public required string DescriptionStat { get; set; }
     }

@@ -11,24 +11,23 @@ namespace TaskManager.DB
     public class Comments
     {
         /// <summary>
-        /// уникальный идентификатор комментария
+        /// Уникальный идентификатор комментария
         /// </summary>
-        [Key] public int IdComment { get; set; }
-        [ForeignKey("IdTask")]
+        public int Id { get; set; }
         /// <summary>
-        /// идентификатор задачи, к которой относится комментарий
+        /// Идентификатор задачи, к которой относится комментарий
         /// </summary>
         public int IdTask {  get; set; }
         /// <summary>
-        /// идентификатор пользователя, написавшего комментарий
+        /// Идентификатор пользователя, написавшего комментарий
         /// </summary>
-        [ForeignKey("IdUser")]public int IdUser { get; set; }
+        public int IdUser { get; set; }
         /// <summary>
-        /// текст комментария
+        /// Текст комментария
         /// </summary>
         public required string TextComment { get; set; }
         /// <summary>
-        /// дата и время написания комментария
+        /// Дата и время написания комментария
         /// </summary>
         public DateTime Datetime { get; set; }
 

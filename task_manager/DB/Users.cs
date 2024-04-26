@@ -3,28 +3,28 @@
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность пользователей
+    /// Сущность пользователей
     /// </summary>
     public class Users
     {
         /// <summary>
-        /// идентификатор пользователя
+        /// Идентификатор пользователя
         /// </summary>
-        [Key]public int IdUser { get; set; }
+        public int Id { get; set; }
         /// <summary>
-        /// фамилия пользователя
+        /// Фамилия пользователя
         /// </summary>
         public required string Surname { get; set; }
         /// <summary>
-        /// имя пользователя
+        /// Имя пользователя
         /// </summary>
         public required string Name { get; set; }
         /// <summary>
-        /// почта пользователя
+        /// Почта пользователя
         /// </summary>
         public required string Email { get; set; }
         /// <summary>
-        /// пароль
+        /// Пароль
         /// </summary>
         public required string Password { get; set; }
 

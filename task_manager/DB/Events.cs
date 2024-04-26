@@ -3,24 +3,24 @@
 namespace TaskManager.DB
 {
     /// <summary>
-    /// сущность событий
+    /// Сущность событий
     /// </summary>
     public class Events
     {
         /// <summary>
-        /// идентификатор события
+        /// Идентификатор события
         /// </summary>
-        [Key] public int IdEvent { get; set; }
+        public int Id { get; set; }
         /// <summary>
-        /// название события
+        /// Название события
         /// </summary>
         public required string EventName { get; set; }
         /// <summary>
-        /// описание события
+        /// Описание события
         /// </summary>
         public required string EventDescription { get; set; }
         /// <summary>
-        /// время проведения события
+        /// Время проведения события
         /// </summary>
         public DateTime EventDatetime { get; set; }
     }

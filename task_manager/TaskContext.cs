@@ -9,55 +9,55 @@ namespace TaskManager
     public class TaskContext:DbContext
     {
         /// <summary>
-        ///  коллекция коментариев
+        /// Коллекция коментариев
         /// </summary>
         public DbSet<Comments> Comments { get; set; }
         /// <summary>
-        /// коллекция пользователей
+        /// Коллекция пользователей
         /// </summary>
         public DbSet<Users> Users { get; set; }
         /// <summary>
-        /// коллекция выполненных задач
+        /// Коллекция выполненных задач
         /// </summary>
         public DbSet<CompletedTasks> CompletedTasks { get; set; }
         /// <summary>
-        /// коллекция приоритетов
+        /// Коллекция приоритетов
         /// </summary>
         public DbSet<PrioritiesTask> PrioritiesTask { get; set; }
         /// <summary>
-        /// коллекция проектов
+        /// Коллекция проектов
         /// </summary>
         public DbSet<Projects> Projects { get; set; }
         /// <summary>
-        /// коллекция статусов
+        /// Коллекция статусов
         /// </summary>
         public DbSet<StatusTask> StatusTasks { get; set; }
         /// <summary>
-        /// коллекция задач
+        /// Коллекция задач
         /// </summary>
         public DbSet<Tasks> Tasks { get; set; }
         /// <summary>
-        /// коллекция участников коммнд
+        /// Коллекция участников коммнд
         /// </summary>
         public DbSet<TeamMembers> TeamMembers { get; set; }
         /// <summary>
-        /// коллекция команд
+        /// Коллекция команд
         /// </summary>
         public DbSet<Teams> Teams { get; set; }
         /// <summary>
-        /// коллекция событий
+        /// Коллекция событий
         /// </summary>
         public DbSet<Events> Events { get; set; }
 
         /// <summary>
-        /// конструктор контекста
+        /// Конструктор контекста
         /// </summary>
         /// <param name="options"></param>
         public TaskContext(DbContextOptions<TaskContext> options) : base(options)
         {
         }
         /// <summary>
-        /// настройка конфигурации 
+        /// Настройка конфигурации 
         /// </summary>
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -70,37 +70,37 @@ namespace TaskManager
             });
         }
         /// <summary>
-        /// создание модели данных 
+        /// Создание модели данных 
         /// </summary>
-        /// <param name="modelBuilder">построитель модели данных</param>
+        /// <param name="modelBuilder">Построитель модели данных</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>()
-                .HasKey(u => u.IdUser);
+                .HasKey(u => u.Id);
 
             modelBuilder.Entity<Teams>()
-                .HasKey(t => t.IdTeam);
+                .HasKey(t => t.Id);
 
             modelBuilder.Entity<TeamMembers>()
                 .HasKey(tm => new { tm.IdTeam, tm.IdUser });
 
             modelBuilder.Entity<CompletedTasks>()
-                .HasKey(ct => ct.IdCompltask);
+                .HasKey(ct => ct.Id);
 
             modelBuilder.Entity<Tasks>()
-                .HasKey(t => t.IdTask);
+                .HasKey(t => t.Id);
 
             modelBuilder.Entity<StatusTask>()
-                .HasKey(st => st.IdStatus);
+                .HasKey(st => st.Id);
 
             modelBuilder.Entity<Users>()
-                .HasKey(u => u.IdUser);
+                .HasKey(u => u.Id);
 
             modelBuilder.Entity<PrioritiesTask>()
-                .HasKey(pt => pt.IdPriority);
+                .HasKey(pt => pt.Id);
 
             modelBuilder.Entity<Projects>()
-                .HasKey(p => p.IdProject);
+                .HasKey(p => p.Id);
 
             modelBuilder.Entity<CompletedTasks>()
                 .HasOne<StatusTask>()
